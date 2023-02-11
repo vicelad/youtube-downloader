@@ -78,12 +78,20 @@ warning_message = Label(window, text="WARNING! Some YouTube videos have copyrigh
 warning_message.place(relx=.5, y=240, anchor="center")
 
 
+# Clearing user input field on click
 def on_click(event):
-    pass
+	user_input.configure(state=NORMAL)
+	user_input.delete(0, END)
+	user_input.unbind('<Button-1>', on_click_id) # makes the callback only work once
+on_click_id = user_input.bind('<Button-1>', on_click)
 
 
 def download_video():
-    pass
+	url_string = user_input.get()
+	url_video_object = YouTube(url_string)
+	youtube_video = url_video_object.streams.get_by_resolution(choose_quality.get())
+	youtube_video.download(folder_name)
+	warning_message.config(text="Your video is downloaded!", foreground="green")
 
 
 window.mainloop()
